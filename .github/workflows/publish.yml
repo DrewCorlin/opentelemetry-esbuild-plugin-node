@@ -1,6 +1,5 @@
-name: Lint
+name: Publish
 
-on:
 on:
   push:
     tags:
@@ -17,7 +16,5 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
-      - name: Lint
-        run: |
-          npm ci
-          npm run compile
+      - name: Publish
+        run:  npm run compile
