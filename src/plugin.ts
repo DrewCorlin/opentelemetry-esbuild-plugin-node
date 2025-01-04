@@ -114,7 +114,6 @@ export function openTelemetryPlugin(
             otelPackageToInstrumentationConfig[pluginData.instrumentationName];
           if (!config) return;
 
-          // console.log('config is', config);
           const packageConfig =
             pluginConfig?.instrumentationConfig?.[
               config.oTelInstrumentationPackage
