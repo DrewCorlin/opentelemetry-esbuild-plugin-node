@@ -2,10 +2,11 @@ name: Publish
 on:
   push:
     tags:
-      - ^v\d+\.\d+\.\d+$
-      - ^\d+\.\d+\.\d+$
-      - ^v\d+\.\d+\.\d+-alpha\.\d+$
-      - ^\d+\.\d+\.\d+-alpha\.\d+$
+      # - ^v\d+\.\d+\.\d+$
+      # - ^\d+\.\d+\.\d+$
+      # - ^v\d+\.\d+\.\d+-alpha\.\d+$
+      # - ^\d+\.\d+\.\d+-alpha\.\d+$
+      - 'v*'
 
 jobs:
   publish:
