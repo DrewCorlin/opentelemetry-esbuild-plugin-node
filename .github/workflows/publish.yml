@@ -18,8 +18,5 @@ jobs:
         run:  npm run compile
       - name: Publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-          NPM_EMAIL: ${{secrets.NPM_EMAIL}}
         run: npm publish
