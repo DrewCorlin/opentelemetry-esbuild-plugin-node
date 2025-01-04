@@ -44,7 +44,7 @@ build({
 
 ## Usage: Instrumentation Initialization
 
-OpenTelemetry Meta Packages for Node automatically loads instrumentations for Node builtin modules and common packages.
+This packages for Node automatically loads instrumentations for Node builtin modules and common packages.
 
 Enable auto instrumentation by configuring it in your esbuild script:
 
