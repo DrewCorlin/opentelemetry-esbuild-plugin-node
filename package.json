@@ -1,12 +1,16 @@
 {
-  "name": "@opentelemetry/esbuild-plugin-node",
+  "name": "opentelemetry-esbuild-plugin-node",
   "version": "0.1.0",
   "description": "Metapackage which bundles opentelemetry node core and contrib instrumentations via an esbuild plugin",
-  "author": "OpenTelemetry Authors",
-  "homepage": "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/metapackages/esbuild-plugin-node#readme",
+  "author": "Drew Corlin",
+  "homepage": "https://github.com/DrewCorlin/opentelemetry-esbuild-plugin-node",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DrewCorlin/opentelemetry-esbuild-plugin-node.git"
+  },
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=14"
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"
@@ -16,7 +20,6 @@
   "exports": {
     ".": "./build/src/index.js"
   },
-  "repository": "open-telemetry/opentelemetry-js-contrib",
   "scripts": {
     "clean": "rimraf build/*",
     "compile": "tsc -p .",
@@ -28,7 +31,7 @@
     "watch": "tsc -w"
   },
   "bugs": {
-    "url": "https://github.com/open-telemetry/opentelemetry-js-contrib/issues"
+    "url": "https://github.com/DrewCorlin/opentelemetry-esbuild-plugin-node/issues"
   },
   "devDependencies": {
     "@fastify/rate-limit": "^9.1.0",
@@ -63,7 +66,7 @@
   "dependencies": {
     "@opentelemetry/auto-instrumentations-node": "0.53.0",
     "@opentelemetry/instrumentation": "^0.55.0",
-    "esbuild": "0.21.x",
+    "esbuild": "0.24.x",
     "semver": "^7.6.3"
   },
   "files": [
