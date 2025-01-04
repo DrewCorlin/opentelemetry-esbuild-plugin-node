@@ -16,7 +16,7 @@ Compatible with OpenTelemetry JS API and SDK `1.0+`.
 ## Installation
 
 ```bash
-npm install --save @opentelemetry/esbuild-plugin-node
+npm install --save opentelemetry-esbuild-plugin-node
 ```
 
 ## Usage: Esbuild plugin
@@ -28,7 +28,7 @@ Please see the [Supported Instrumentations](#supported-instrumentations) section
 Enable auto instrumentation by configuring it in your esbuild script:
 
 ```javascript
-const { openTelemetryPlugin } = require('@opentelemetry/esbuild-plugin-node');
+const { openTelemetryPlugin } = require('opentelemetry-esbuild-plugin-node');
 const { build } = require('esbuild');
 
 build({
@@ -49,7 +49,7 @@ OpenTelemetry Meta Packages for Node automatically loads instrumentations for No
 Enable auto instrumentation by configuring it in your esbuild script:
 
 ```javascript
-const { openTelemetryPlugin } = require('@opentelemetry/esbuild-plugin-node');
+const { openTelemetryPlugin } = require('opentelemetry-esbuild-plugin-node');
 const { build } = require('esbuild');
 
 build({
@@ -66,7 +66,7 @@ build({
 Custom configuration for each of the instrumentations can be passed to the plugin, by providing an object with the name of the instrumentation as a key, and its configuration as the value.
 
 ```javascript
-const { openTelemetryPlugin } = require('@opentelemetry/esbuild-plugin-node');
+const { openTelemetryPlugin } = require('opentelemetry-esbuild-plugin-node');
 const { build } = require('esbuild');
 
 build({
