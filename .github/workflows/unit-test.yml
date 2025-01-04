@@ -28,7 +28,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-build-cache-${{ github.run_number }}
-          path: node_modules/.cache/nx
+          path: |
+            node_modules/
+            build/
           retention-days: 1
 
   unit-test:
@@ -57,7 +59,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tests-build-cache-${{ github.run_number }}
-          path: node_modules/.cache/nx
+          path: |
+            node_modules/
+            build
       - name: Build
         run: npm run compile
       - name: Unit tests (Full)
