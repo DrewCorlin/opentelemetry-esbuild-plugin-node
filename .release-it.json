@@ -1,0 +1,17 @@
+{
+    "$schema": "https://unpkg.com/release-it@17/schema/release-it.json",
+    "git": {
+      "commitMessage": "v${version}",
+      "commit": true,
+      "push": true,
+      "tag": true,
+      "requireCleanWorkingDir": false,
+      "requireBranch": "main"
+    },
+    "github": {
+      "release": true
+    },
+    "npm": {
+        "publish": false
+    }
+  }

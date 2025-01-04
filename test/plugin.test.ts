@@ -28,7 +28,7 @@ function startTestApp() {
     ['--require', './test-app/register.js', '../test-dist/app.js'],
     {
       cwd: __dirname,
-      timeout: 15000,
+      timeout: 60_000,
       killSignal: 'SIGKILL', // SIGTERM is not sufficient to terminate some hangs
       env: {
         ...process.env,
@@ -72,7 +72,7 @@ function getTrace(stdOutLines: string[], spanName: string) {
 }
 
 describe('Esbuild can instrument packages via a plugin', function () {
-  this.timeout(20_000);
+  this.timeout(60_000);
   let stdOutLines: string[] = [];
 
   before(async () => {

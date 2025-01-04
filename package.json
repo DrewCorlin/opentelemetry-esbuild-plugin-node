@@ -1,6 +1,6 @@
 {
   "name": "opentelemetry-esbuild-plugin-node",
-  "version": "0.2.5",
+  "version": "0.2.6-alpha.20",
   "description": "Metapackage which bundles opentelemetry node core and contrib instrumentations via an esbuild plugin",
   "author": "Drew Corlin",
   "homepage": "https://github.com/DrewCorlin/opentelemetry-esbuild-plugin-node",
@@ -13,7 +13,8 @@
     "node": ">=20"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
@@ -58,6 +59,7 @@
     "pino": "^8.19.0",
     "prettier": "2.8.8",
     "redis": "^4.7.0",
+    "release-it": "^17.11.0",
     "rimraf": "5.0.5",
     "ts-mocha": "10.0.0",
     "ts-node": "^10.9.2",
