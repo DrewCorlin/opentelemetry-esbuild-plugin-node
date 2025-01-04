@@ -23,7 +23,6 @@ import { promisify } from 'util';
 const exec = promisify(execCb);
 
 function startTestApp() {
-  console.log('starting app', process.execPath)
   return spawnSync(
     process.execPath,
     ['--require', './test-app/register.js', '../test-dist/app.js'],
