@@ -22,6 +22,6 @@ jobs:
           NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           NPM_EMAIL: ${{secrets.NPM_EMAIL}}
         run: |
-          echo "_auth = $NPM_AUTH_TOKEN" > .npmrc
+          echo "//registry.npmjs.org/:_auth = $NPM_AUTH_TOKEN" > .npmrc
           echo "email = $NPM_EMAIL" >> .npmrc
           npm publish
