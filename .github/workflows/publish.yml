@@ -7,7 +7,7 @@ on:
       - ^v\d+\.\d+\.\d+-alpha\.\d+$
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
