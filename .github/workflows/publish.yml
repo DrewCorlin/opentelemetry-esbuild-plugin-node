@@ -2,10 +2,6 @@ name: Publish
 on:
   push:
     tags:
-      # - ^v\d+\.\d+\.\d+$
-      # - ^\d+\.\d+\.\d+$
-      # - ^v\d+\.\d+\.\d+-alpha\.\d+$
-      # - ^\d+\.\d+\.\d+-alpha\.\d+$
       - 'v*'
 
 jobs:
@@ -18,5 +14,7 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
-      - name: Publish
+      - name: Compile
         run:  npm run compile
+      - name: Publish
+        run:  npm publish
