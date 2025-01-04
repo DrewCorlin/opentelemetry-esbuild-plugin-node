@@ -3,8 +3,8 @@ name: Publish
 on:
   push:
     tags:
-      - ^\d+\.\d+\.\d+$
-      - ^\d+\.\d+\.\d+-alpha\.\d+$
+      - ^v\d+\.\d+\.\d+$
+      - ^v\d+\.\d+\.\d+-alpha\.\d+$
 
 jobs:
   build:
