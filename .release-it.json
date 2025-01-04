@@ -6,9 +6,12 @@
       "push": true,
       "tag": true,
       "requireCleanWorkingDir": false,
-      "requireBranch": "main"
+      "requireBranch": "main",
     },
     "github": {
       "release": false
+    },
+    "npm": {
+        "publish": false
     }
   }
