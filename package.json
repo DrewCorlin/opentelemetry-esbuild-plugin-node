@@ -13,7 +13,8 @@
     "node": ">=20"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "http://registry.npmjs.org"
   },
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
