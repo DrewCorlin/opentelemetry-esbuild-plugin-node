@@ -6,8 +6,8 @@
 ## About
 
 This module provides a way to auto instrument any Node application to capture telemetry from a number of popular libraries and frameworks, via an [esbuild](https://esbuild.github.io/) plugin.
-You can export the telemetry data in a variety of formats. Exporters, samplers, and more can be configured via [environment variables][env-var-url].
-The net result is the ability to gather telemetry data from a Node application without any code changes.
+
+The net result is the ability to gather telemetry data from a Node application without any code changes to your application.
 
 This module also provides a simple way to manually initialize multiple Node instrumentations for use with the OpenTelemetry SDK.
 
