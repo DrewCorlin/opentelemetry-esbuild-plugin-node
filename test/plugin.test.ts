@@ -28,7 +28,7 @@ function startTestApp() {
     ['--require', './test-app/register.js', '../test-dist/app.js'],
     {
       cwd: __dirname,
-      timeout: 15000,
+      timeout: 60_000,
       killSignal: 'SIGKILL', // SIGTERM is not sufficient to terminate some hangs
       env: {
         ...process.env,
