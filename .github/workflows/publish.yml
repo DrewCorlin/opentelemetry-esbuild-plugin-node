@@ -20,4 +20,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-        run:  npm publish
+          NPM_EMAIL: ${{secrets.NPM_EMAIL}}
+        run: |
+          echo "_auth = $NPM_AUTH_TOKEN" > .npmrc
+          echo "email = $NPM_EMAIL" >> .npmrc
+          npm publish
