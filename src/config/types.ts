@@ -17,7 +17,7 @@
 import { EsbuildInstrumentationConfigMap } from '../types';
 
 export interface InstrumentationConfig<
-  T extends keyof EsbuildInstrumentationConfigMap
+  T extends keyof EsbuildInstrumentationConfigMap,
 > {
   oTelInstrumentationPackage: T;
   oTelInstrumentationClass: string;

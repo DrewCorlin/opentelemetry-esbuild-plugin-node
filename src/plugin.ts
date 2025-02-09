@@ -66,7 +66,7 @@ export function openTelemetryPlugin(
           );
           path = result.path;
           extractedModule = result.extractedModule;
-        } catch (e) {
+        } catch {
           // Some libraries like `mongodb` require optional dependencies, which may not be present and their absence doesn't break the code
           // Currently esbuild doesn't provide any better way to handle this in plugins: https://github.com/evanw/esbuild/issues/1127
         }

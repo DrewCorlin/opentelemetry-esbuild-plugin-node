@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import * as assert from 'assert';
 
 import { exec as execCb, spawnSync } from 'child_process';
@@ -76,7 +77,16 @@ describe('Esbuild can instrument packages via a plugin', function () {
   let stdOutLines: string[] = [];
 
   before(async () => {
-    await exec(`ts-node ${__dirname}/test-app/build.ts`);
+    const enabledInstrumentations = [
+      ...getNodeAutoInstrumentations().map(i =>
+        i.instrumentationName.replace('@opentelemetry/instrumentation-', '')
+      ),
+      // Using fastify in the test server so enable it
+      'fastify',
+    ];
+    await exec(
+      `OTEL_NODE_ENABLED_INSTRUMENTATIONS=${enabledInstrumentations.join(',')} ts-node ${__dirname}/test-app/build.ts`
+    );
 
     const proc = startTestApp();
 

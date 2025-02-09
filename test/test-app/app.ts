@@ -21,13 +21,14 @@ import { createClient } from 'redis';
 import fastify from 'fastify';
 import { graphql } from './graphql/adapter';
 import pino from 'pino';
+import fastifyRateLimit from '@fastify/rate-limit';
 
 const redisClient = createClient({ url: process.env.REDIS_URL });
 
 export const server = fastify({
-  logger: pino({}, pino.destination(1)),
+  loggerInstance: pino({}, pino.destination(1)),
   disableRequestLogging: true,
-}).register(require('@fastify/rate-limit'), {
+}).register(fastifyRateLimit, {
   // Use @fastify/rate-limit to avoid CodeQL "Missing rate limiting" error in CI
   global: true,
   max: 100,
