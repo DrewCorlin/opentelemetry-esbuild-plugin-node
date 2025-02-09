@@ -16,7 +16,7 @@ Compatible with OpenTelemetry JS API and SDK `1.0+`.
 ## Installation
 
 ```bash
-npm install --save opentelemetry-esbuild-plugin-node
+npm i -D opentelemetry-esbuild-plugin-node
 ```
 
 ## Usage: Esbuild plugin
@@ -96,7 +96,7 @@ for builtins or add any additional instrumentations.
 
 ### Gotchas
 
-There are limitations to the configuration options for each package. Most notably, any functions (like `ignoreIncomingRequestHook` in the example) are not allowed to be passed in to plugins.
+There are limitations to the configuration options for each package. Most notably, any functions are not allowed to be passed in to plugins.
 
 The reason for this is that the current mechanism of instrumenting packages involves stringifying the instrumentation configs, which does not account for any external scoped dependencies, and thus creates subtle opportunities for bugs.
 
