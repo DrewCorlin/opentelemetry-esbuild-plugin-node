@@ -72,91 +72,104 @@ function getTrace(stdOutLines: string[], spanName: string) {
     .join('');
 }
 
-describe('Esbuild can instrument packages via a plugin', function () {
-  this.timeout(60_000);
-  let stdOutLines: string[] = [];
+const buildScripts = ['build.ts', 'build-manual-instrumentations.ts'];
 
-  before(async () => {
-    const enabledInstrumentations = [
-      ...getNodeAutoInstrumentations().map(i =>
-        i.instrumentationName.replace('@opentelemetry/instrumentation-', '')
-      ),
-      // Using fastify in the test server so enable it
-      'fastify',
-    ];
-    await exec(
-      `OTEL_NODE_ENABLED_INSTRUMENTATIONS=${enabledInstrumentations.join(',')} ts-node ${__dirname}/test-app/build.ts`
-    );
+buildScripts.forEach(buildScript => {
+  describe(
+    'Esbuild can instrument packages via a plugin: ' + buildScript,
+    function () {
+      this.timeout(60_000);
+      let stdOutLines: string[] = [];
 
-    const proc = startTestApp();
+      before(async () => {
+        const enabledInstrumentations = [
+          ...getNodeAutoInstrumentations().map(i =>
+            i.instrumentationName.replace('@opentelemetry/instrumentation-', '')
+          ),
+          // Using fastify in the test server so enable it
+          'fastify',
+        ];
+        await exec(
+          `OTEL_NODE_ENABLED_INSTRUMENTATIONS=${enabledInstrumentations.join(',')} ts-node ${__dirname}/test-app/${buildScript}`
+        );
 
-    assert.ifError(proc.error);
-    assert.equal(proc.status, 0, `proc.status (${proc.status})`);
-    assert.equal(proc.signal, null, `proc.signal (${proc.signal})`);
+        const proc = startTestApp();
 
-    const stdOut = proc.stdout.toString();
-    stdOutLines = stdOut.split('\n');
+        assert.ifError(proc.error);
+        assert.equal(proc.status, 0, `proc.status (${proc.status})`);
+        assert.equal(proc.signal, null, `proc.signal (${proc.signal})`);
 
-    assert.ok(
-      stdOutLines.find(
-        logLine =>
-          logLine ===
-          'OpenTelemetry automatic instrumentation started successfully'
-      )
-    );
-  });
+        const stdOut = proc.stdout.toString();
+        stdOutLines = stdOut.split('\n');
 
-  it('fastify and pino', async () => {
-    assert.ok(
-      stdOutLines.find(
-        logLine =>
-          logLine ===
-          'OpenTelemetry automatic instrumentation started successfully'
-      )
-    );
+        assert.ok(
+          stdOutLines.find(
+            logLine =>
+              logLine ===
+              'OpenTelemetry automatic instrumentation started successfully'
+          )
+        );
+      });
 
-    const traceId = getTraceId(
-      stdOutLines,
-      'request handler - fastify -> @fastify/rate-limit'
-    );
+      it('fastify and pino', async () => {
+        assert.ok(
+          stdOutLines.find(
+            logLine =>
+              logLine ===
+              'OpenTelemetry automatic instrumentation started successfully'
+          )
+        );
 
-    assert.ok(traceId, 'console span output in stdout contains a fastify span');
+        const traceId = getTraceId(
+          stdOutLines,
+          'request handler - fastify -> @fastify/rate-limit'
+        );
 
-    const requestHandlerLogMessage = stdOutLines.find(line =>
-      line.includes('Log message from handler')
-    );
+        assert.ok(
+          traceId,
+          'console span output in stdout contains a fastify span'
+        );
 
-    assert.ok(requestHandlerLogMessage, 'Log message handler is triggered');
-    const { trace_id } = JSON.parse(requestHandlerLogMessage);
-    assert.equal(traceId, trace_id, 'Pino logs include trace ID');
-  });
+        const requestHandlerLogMessage = stdOutLines.find(line =>
+          line.includes('Log message from handler')
+        );
 
-  it('redis', async () => {
-    const traceId = getTraceId(stdOutLines, 'redis-GET');
+        assert.ok(requestHandlerLogMessage, 'Log message handler is triggered');
+        const { traceId: pinoTraceId } = JSON.parse(requestHandlerLogMessage);
+        assert.equal(traceId, pinoTraceId, 'Pino logs include trace ID');
+      });
 
-    assert.ok(traceId, 'console span output in stdout contains a redis span');
-  });
+      it('redis', async () => {
+        const traceId = getTraceId(stdOutLines, 'redis-GET');
 
-  it('mongodb', async () => {
-    const traceId = getTraceId(stdOutLines, 'mongodb.find');
+        assert.ok(
+          traceId,
+          'console span output in stdout contains a redis span'
+        );
+      });
 
-    assert.ok(traceId, 'console span output in stdout contains a traceId');
-  });
+      it('mongodb', async () => {
+        const traceId = getTraceId(stdOutLines, 'mongodb.find');
 
-  describe('graphql', () => {
-    it('should instrument parse', () => {
-      const parseSpan = getTrace(stdOutLines, 'graphql.parse');
-      assert.ok(parseSpan, 'There is a span for graphql.parse');
-    });
+        assert.ok(traceId, 'console span output in stdout contains a traceId');
+      });
 
-    it('should instrument validate', () => {
-      const parseSpan = getTrace(stdOutLines, 'graphql.validate');
-      assert.ok(parseSpan, 'There is a span for graphql.validate');
-    });
+      describe('graphql', () => {
+        it('should instrument parse', () => {
+          const parseSpan = getTrace(stdOutLines, 'graphql.parse');
+          assert.ok(parseSpan, 'There is a span for graphql.parse');
+        });
 
-    it('should instrument execute', () => {
-      const parseSpan = getTrace(stdOutLines, 'query');
-      assert.ok(parseSpan, 'There is a span for query');
-    });
-  });
+        it('should instrument validate', () => {
+          const parseSpan = getTrace(stdOutLines, 'graphql.validate');
+          assert.ok(parseSpan, 'There is a span for graphql.validate');
+        });
+
+        it('should instrument execute', () => {
+          const parseSpan = getTrace(stdOutLines, 'query');
+          assert.ok(parseSpan, 'There is a span for query');
+        });
+      });
+    }
+  );
 });

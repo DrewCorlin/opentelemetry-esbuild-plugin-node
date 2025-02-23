@@ -16,6 +16,7 @@
 
 import { build } from 'esbuild';
 import { openTelemetryPlugin } from '../../src/plugin';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 
 build({
   entryPoints: [`${__dirname}/app.ts`],
@@ -26,7 +27,7 @@ build({
   sourcemap: true,
   plugins: [
     openTelemetryPlugin({
-      instrumentationConfig: {
+      instrumentations: getNodeAutoInstrumentations({
         '@opentelemetry/instrumentation-pino': {
           logKeys: {
             traceId: 'traceId',
@@ -34,7 +35,7 @@ build({
             traceFlags: 'traceFlags',
           },
         },
-      },
+      }),
     }),
   ],
 }).catch(err => {

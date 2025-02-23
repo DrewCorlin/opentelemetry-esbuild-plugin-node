@@ -21,17 +21,6 @@ import {
 } from '@opentelemetry/instrumentation';
 
 import { EsbuildInstrumentationConfigMap } from '../types';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-
-const instrumentations = getNodeAutoInstrumentations();
-const instrumentationModuleDefinitionsByInstrumentationName =
-  Object.fromEntries(
-    instrumentations.map(i => [i.instrumentationName, getModuleDefinitions(i)])
-  );
-
-export const instrumentationModuleDefinitions = Object.values(
-  instrumentationModuleDefinitionsByInstrumentationName
-).flat();
 
 function getModuleDefinitions(
   instrumentation: Instrumentation
@@ -40,6 +29,7 @@ function getModuleDefinitions(
     return instrumentation.getModuleDefinitions() ?? [];
   }
 
+  // TODO: Log warning in this case?
   return [];
 }
 
@@ -54,7 +44,21 @@ function configGenerator<T extends { enabled?: boolean }>(
   );
 }
 
-export function getOtelPackageToInstrumentationConfig() {
+export function getOtelPackageToInstrumentationConfig(
+  instrumentations: Instrumentation[]
+) {
+  const instrumentationModuleDefinitionsByInstrumentationName =
+    Object.fromEntries(
+      instrumentations.map(i => [
+        i.instrumentationName,
+        getModuleDefinitions(i),
+      ])
+    );
+
+  const instrumentationModuleDefinitions = Object.values(
+    instrumentationModuleDefinitionsByInstrumentationName
+  ).flat();
+
   const otelPackageToInstrumentationConfig: Record<
     string,
     {
@@ -72,8 +76,8 @@ export function getOtelPackageToInstrumentationConfig() {
       ];
 
     for (const instrumentationModuleDefinition of moduleDefinitions) {
+      // TODO: Remove with version upgrades?
       // For some reason @opentelemetry/instrumentation-generic-pool reports its name as just Instrumentation
-      // TODO: See if this goes away with an upgrade
       if (instrumentation.constructor.name === 'Instrumentation') continue;
       otelPackageToInstrumentationConfig[instrumentationModuleDefinition.name] =
         {
@@ -84,8 +88,8 @@ export function getOtelPackageToInstrumentationConfig() {
         };
     }
   }
-  return otelPackageToInstrumentationConfig;
+  return {
+    otelPackageToInstrumentationConfig,
+    instrumentationModuleDefinitions,
+  };
 }
-
-export const otelPackageToInstrumentationConfig =
-  getOtelPackageToInstrumentationConfig();
