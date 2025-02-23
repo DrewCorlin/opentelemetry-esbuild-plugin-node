@@ -46,11 +46,14 @@ build({
 
 This packages for Node automatically loads instrumentations for Node builtin modules and common packages.
 
-Enable auto instrumentation by configuring it in your esbuild script:
+Enable instrumentation by configuring it in your esbuild script:
 
 ```javascript
 const { openTelemetryPlugin } = require('opentelemetry-esbuild-plugin-node');
 const { build } = require('esbuild');
+const {
+  getNodeAutoInstrumentations,
+} = require('@opentelemetry/auto-instrumentations-node');
 
 build({
   entryPoints: ['src/server.ts'],
@@ -59,11 +62,13 @@ build({
   target: 'node20',
   platform: 'node',
   sourcemap: true,
-  plugins: [openTelemetryPlugin()],
+  plugins: [
+    openTelemetryPlugin({ instrumentations: getNodeAutoInstrumentations() }),
+  ],
 });
 ```
 
-Custom configuration for each of the instrumentations can be passed to the plugin, by providing an object with the name of the instrumentation as a key, and its configuration as the value.
+Custom configuration for each of the instrumentations can be passed to the plugin, by providing an object with the name of the instrumentation as a key, and its configuration as the value. Though passing instrumentations in directly is preferred, and the ability to configure via `instrumentationConfig` rather than passing in instrumentations directly will be removed in a future version.
 
 ```javascript
 const { openTelemetryPlugin } = require('opentelemetry-esbuild-plugin-node');

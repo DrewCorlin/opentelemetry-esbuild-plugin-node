@@ -15,6 +15,7 @@
  */
 
 import {
+  EsbuildInstrumentationConfigMap,
   ExtractedModule,
   OnLoadArgs,
   OpenTelemetryPluginParams,
@@ -22,24 +23,40 @@ import {
 } from './types';
 import { Plugin, PluginBuild } from 'esbuild';
 import { dirname, join } from 'path';
-import {
-  instrumentationModuleDefinitions,
-  otelPackageToInstrumentationConfig,
-} from './config/main';
 
 import { InstrumentationModuleDefinition } from '@opentelemetry/instrumentation';
 import { builtinModules } from 'module';
 import { readFile } from 'fs/promises';
 import { satisfies } from 'semver';
 import { wrapModule } from './common';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { getOtelPackageToInstrumentationConfig } from './config';
 
 const NODE_MODULES = 'node_modules/';
 
 const BUILT_INS = new Set(builtinModules.flatMap(b => [b, `node:${b}`]));
 
+function validateConfig(pluginConfig?: OpenTelemetryPluginParams) {
+  if (!pluginConfig) return;
+  if (pluginConfig.instrumentationConfig && pluginConfig.instrumentations) {
+    throw new Error(
+      'OpenTelemetryPluginParams and instrumentations must not be used together'
+    );
+  }
+}
+
 export function openTelemetryPlugin(
   pluginConfig?: OpenTelemetryPluginParams
 ): Plugin {
+  validateConfig(pluginConfig);
+
+  const {
+    otelPackageToInstrumentationConfig,
+    instrumentationModuleDefinitions,
+  } = getOtelPackageToInstrumentationConfig(
+    pluginConfig?.instrumentations ?? getNodeAutoInstrumentations()
+  );
+
   return {
     name: 'open-telemetry',
     setup(build) {
@@ -86,6 +103,7 @@ export function openTelemetryPlugin(
 
         // See if we have an instrumentation registered for this package
         const matchingInstrumentation = getInstrumentation({
+          instrumentationModuleDefinitions,
           extractedModule,
           moduleVersion,
           path: args.path,
@@ -114,10 +132,10 @@ export function openTelemetryPlugin(
             otelPackageToInstrumentationConfig[pluginData.instrumentationName];
           if (!config) return;
 
-          const packageConfig =
-            pluginConfig?.instrumentationConfig?.[
-              config.oTelInstrumentationPackage
-            ];
+          const packageConfig = getPackageConfig({
+            pluginConfig,
+            oTelInstrumentationPackage: config.oTelInstrumentationPackage,
+          });
           const extractedModule = pluginData.extractedModule;
 
           return {
@@ -139,6 +157,28 @@ export function openTelemetryPlugin(
       );
     },
   };
+}
+
+function getPackageConfig({
+  pluginConfig,
+  oTelInstrumentationPackage,
+}: {
+  pluginConfig?: OpenTelemetryPluginParams;
+  oTelInstrumentationPackage: keyof EsbuildInstrumentationConfigMap;
+}) {
+  if (!pluginConfig) return;
+  if (pluginConfig.instrumentations) {
+    const matchingPlugin = pluginConfig.instrumentations.find(
+      i => i.instrumentationName === oTelInstrumentationPackage
+    );
+    if (!matchingPlugin) {
+      throw new Error(
+        `Instrumentation ${oTelInstrumentationPackage} was found but does not exist in list of instrumentations`
+      );
+    }
+    return matchingPlugin.getConfig();
+  }
+  return pluginConfig.instrumentationConfig?.[oTelInstrumentationPackage];
 }
 
 /**
@@ -245,10 +285,12 @@ async function getModuleVersion({
 }
 
 function getInstrumentation({
+  instrumentationModuleDefinitions,
   extractedModule,
   path,
   moduleVersion,
 }: {
+  instrumentationModuleDefinitions: InstrumentationModuleDefinition[];
   extractedModule: ExtractedModule;
   path: string;
   moduleVersion: string;

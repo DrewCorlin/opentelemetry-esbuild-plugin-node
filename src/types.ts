@@ -16,6 +16,7 @@
 
 import type { OnLoadArgs as EsbuildOnLoadArgs } from 'esbuild';
 import type { InstrumentationConfigMap } from '@opentelemetry/auto-instrumentations-node';
+import { Instrumentation } from '@opentelemetry/instrumentation';
 
 export interface ExtractedModule {
   package: string;
@@ -68,6 +69,11 @@ export type EsbuildInstrumentationConfigMap = {
 };
 
 export interface OpenTelemetryPluginParams {
+  /**
+   * Allow configuring instrumentations loaded from getNodeAutoInstrumentations (from @opentelemetry/auto-instrumentations-node).
+   *
+   * @deprecated Use `instrumentations` instead and pass in already configured instrumentations
+   */
   instrumentationConfig?: EsbuildInstrumentationConfigMap;
 
   /** Modules to consider external and ignore from the plugin */
@@ -80,4 +86,43 @@ export interface OpenTelemetryPluginParams {
    * root of your project then you could set that here to ignore modules
    */
   pathPrefixesToIgnore?: string[];
+
+  /**
+   * Instrumentations to apply
+   * Defaults to `getNodeAutoInstrumentations()` from `@opentelemetry/auto-instrumentations-node`.
+   * NB: getNodeAutoInstrumentations() can change what it returns (and what is enabled by default) version to version
+   * so as this plugin updates dependencies that may change, if you are not manually configuring instrumentations.
+   *
+   * NB: Not all config options for each instrumentation will be respected. Notably, functions will be ignored
+   * as this plugin requires serializing the configs as JSON during bundling which are then read at runtime.
+   *
+   * This works:
+   * ```typescript
+   * openTelemetryPlugin({
+   *   instrumentations: [
+   *     new PinoInstrumentation({
+   *       logKeys: {
+   *         traceId: 'traceId',
+   *         spanId: 'spanId',
+   *         traceFlags: 'traceFlags',
+   *       }
+   *     })
+   *   ]
+   * })
+   * ```
+   *
+   * This would not (logHook would be ignored)
+   * ```typescript
+   * openTelemetryPlugin({
+   *   instrumentations: [
+   *     new PinoInstrumentation({
+   *       logHook: (span, record) => {
+   *         record['resource.service.name'] = provider.resource.attributes['service.name'];
+   *       }
+   *     })
+   *   ]
+   * })
+   * ```
+   */
+  instrumentations?: Instrumentation[];
 }
