@@ -57,7 +57,7 @@
     "mongodb-memory-server": "9.5.0",
     "nyc": "17.1.0",
     "pino": "^9.6.0",
-    "prettier": "3.5.1",
+    "prettier": "3.5.2",
     "redis": "^4.7.0",
     "release-it": "^18.1.2",
     "rimraf": "6.0.1",
@@ -66,7 +66,7 @@
     "typescript": "5.7.3"
   },
   "dependencies": {
-    "@opentelemetry/auto-instrumentations-node": "^0.56.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.56.1",
     "@opentelemetry/instrumentation": "^0.57.2",
     "esbuild": "0.25.x",
     "semver": "^7.7.1"
