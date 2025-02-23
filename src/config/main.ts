@@ -29,7 +29,6 @@ function getModuleDefinitions(
     return instrumentation.getModuleDefinitions() ?? [];
   }
 
-  // TODO: Log warning in this case?
   return [];
 }
 
@@ -76,9 +75,6 @@ export function getOtelPackageToInstrumentationConfig(
       ];
 
     for (const instrumentationModuleDefinition of moduleDefinitions) {
-      // TODO: Remove with version upgrades?
-      // For some reason @opentelemetry/instrumentation-generic-pool reports its name as just Instrumentation
-      if (instrumentation.constructor.name === 'Instrumentation') continue;
       otelPackageToInstrumentationConfig[instrumentationModuleDefinition.name] =
         {
           oTelInstrumentationPackage:
