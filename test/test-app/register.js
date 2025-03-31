@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-const opentelemetry = require('@opentelemetry/sdk-node');
+const { core, NodeSDK } = require('@opentelemetry/sdk-node');
 const { DiagConsoleLogger, diag } = require('@opentelemetry/api');
 
 diag.setLogger(
   new DiagConsoleLogger(),
-  opentelemetry.core.getEnv().OTEL_LOG_LEVEL
+  core.getStringFromEnv('OTEL_LOG_LEVEL')
 );
 
-const sdk = new opentelemetry.NodeSDK({
+const sdk = new NodeSDK({
   // Notably instrumentation fastify, pino and graphql are not in here
   instrumentations: [],
 });
