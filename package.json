@@ -68,8 +68,10 @@
   "dependencies": {
     "@opentelemetry/auto-instrumentations-node": "^0.57.0",
     "@opentelemetry/instrumentation": "^0.200.0",
-    "esbuild": "0.25.x",
     "semver": "^7.7.1"
+  },
+  "peerDependencies": {
+    "esbuild": ">=0.21.x <=0.25.x"
   },
   "files": [
     "build/src/**/*.js",
