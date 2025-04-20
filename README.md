@@ -21,8 +21,7 @@ npm i -D opentelemetry-esbuild-plugin-node
 
 ## Usage: Esbuild plugin
 
-This module includes instrumentation for all supported instrumentations and [all available data exporters][exporter-url].
-It provides a completely automatic, out-of-the-box experience.
+This module includes instrumentation for all supported non-builtin instrumentations.
 Please see the [Supported Instrumentations](#supported-instrumentations) section for more information.
 
 Enable auto instrumentation by configuring it in your esbuild script:
@@ -153,4 +152,3 @@ APACHE 2.0 - See [LICENSE][license-url] for more information.
 [npm-url]: https://www.npmjs.com/package/@opentelemetry/auto-instrumentations-node
 [npm-img]: https://badge.fury.io/js/%40opentelemetry%2Fauto-instrumentations-node.svg
 [env-var-url]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/configuration/sdk-environment-variables.md#general-sdk-configuration
-[exporter-url]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/configuration/sdk-environment-variables.md#otlp-exporter
