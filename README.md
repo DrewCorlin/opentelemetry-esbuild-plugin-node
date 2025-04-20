@@ -16,7 +16,7 @@ Compatible with OpenTelemetry JS API and SDK `1.0+`.
 ## Installation
 
 ```bash
-npm i -D opentelemetry-esbuild-plugin-node
+npm i -D opentelemetry-esbuild-plugin-node esbuild
 ```
 
 ## Usage: Esbuild plugin
@@ -31,7 +31,7 @@ const { openTelemetryPlugin } = require('opentelemetry-esbuild-plugin-node');
 const { build } = require('esbuild');
 
 build({
-  entryPoints: ['src/server.ts'],
+  entryPoints: ['src/server.ts'], // Path to the entrypoint of your application
   bundle: true,
   outfile: 'dist/server.js',
   target: 'node20',
