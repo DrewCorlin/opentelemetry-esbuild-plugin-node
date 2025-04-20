@@ -1,7 +1,7 @@
 {
   "name": "opentelemetry-esbuild-plugin-node",
   "version": "3.0.0",
-  "description": "Metapackage which bundles opentelemetry node core and contrib instrumentations via an esbuild plugin",
+  "description": "Esbuild plugin which bundles opentelemetry node core and contrib instrumentations into your code",
   "author": "Drew Corlin",
   "homepage": "https://github.com/DrewCorlin/opentelemetry-esbuild-plugin-node",
   "repository": {
