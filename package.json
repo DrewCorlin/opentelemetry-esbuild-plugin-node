@@ -22,13 +22,13 @@
     ".": "./build/src/index.js"
   },
   "scripts": {
-    "clean": "rimraf build/*",
+    "clean": "rm -rf build/*",
     "compile": "tsc -p .",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prepublishOnly": "npm run compile",
     "tdd": "yarn test -- --watch-extensions ts --watch",
-    "test": "nyc ts-mocha -p tsconfig.json 'test/**/*.ts'",
+    "test": "node --require ts-node/register --test --experimental-test-coverage 'test/**/*.test.ts'",
     "watch": "tsc -w"
   },
   "bugs": {
@@ -38,7 +38,6 @@
     "@fastify/rate-limit": "^10.2.2",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/sdk-node": "^0.200.0",
-    "@types/mocha": "^10.0.10",
     "@types/node": "^22.14.1",
     "@types/semver": "^7.7.0",
     "@typescript-eslint/eslint-plugin": "8.28.0",
@@ -52,7 +51,6 @@
     "eslint-plugin-prettier": "5.2.5",
     "fastify": "5.3.2",
     "graphql": "^16.10.0",
-    "mocha": "^11.1.0",
     "mongodb": "6.8.0",
     "mongodb-memory-server": "9.5.0",
     "nyc": "17.1.0",
@@ -60,8 +58,6 @@
     "prettier": "3.5.3",
     "redis": "^4.7.0",
     "release-it": "^19.0.1",
-    "rimraf": "6.0.1",
-    "ts-mocha": "^11.1.0",
     "ts-node": "^10.9.2",
     "typescript": "5.8.3"
   },
