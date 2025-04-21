@@ -28,7 +28,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "prepublishOnly": "npm run compile",
     "tdd": "yarn test -- --watch-extensions ts --watch",
-    "test": "node --require ts-node/register --test --experimental-test-coverage 'test/**/*.test.ts'",
+    "test": "nyc node --require ts-node/register --test 'test/**/*.test.ts'",
     "watch": "tsc -w"
   },
   "bugs": {
