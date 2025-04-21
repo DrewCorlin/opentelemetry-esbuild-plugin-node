@@ -1,7 +1,7 @@
 name: Unit Tests
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
 
@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Install
         run: npm ci
       - name: Build
@@ -38,10 +38,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ["20", "22"]
+        node: ['20', '22']
         include:
-            - node: 20
-              code-coverage: true
+          - node: 20
+            code-coverage: true
     runs-on: ubuntu-latest
     env:
       NPM_CONFIG_UNSAFE_PERM: true
@@ -66,4 +66,3 @@ jobs:
         run: npm run compile
       - name: Unit tests (Full)
         run: npm run test
-
