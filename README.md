@@ -1,5 +1,9 @@
 # OpenTelemetry Esbuild for Node
 
+> [!WARNING]  
+> This repo is superseded by https://github.com/DrewCorlin/opentelemetry-node-bundler-plugins which contains future versions
+> of this esbuild plugin along with other bundler (webpack, rollup, etc) plugins for the same functionality
+
 [![NPM Published Version][npm-img]][npm-url]
 [![Apache License][license-image]][license-url]
 
