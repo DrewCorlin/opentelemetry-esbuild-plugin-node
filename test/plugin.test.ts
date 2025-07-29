@@ -20,6 +20,7 @@ import * as assert from 'assert';
 import { exec as execCb, spawnSync } from 'child_process';
 
 import { promisify } from 'util';
+import { describe, before, it } from 'node:test';
 
 const exec = promisify(execCb);
 
@@ -77,8 +78,8 @@ const buildScripts = ['build.ts', 'build-manual-instrumentations.ts'];
 buildScripts.forEach(buildScript => {
   describe(
     'Esbuild can instrument packages via a plugin: ' + buildScript,
-    function () {
-      this.timeout(60_000);
+    { timeout: 60_000 },
+    () => {
       let stdOutLines: string[] = [];
 
       before(async () => {
